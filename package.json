@@ -1,0 +1,26 @@
+{
+  "name": "pdv-restaurante",
+  "productName": "PDV Restaurante",
+  "private": true,
+  "version": "0.1.0",
+  "description": "PDV desktop para restaurantes",
+  "main": "electron/main.js",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web,app -c cyan,green,magenta \"npm run dev -w backend\" \"npm run dev -w frontend\" \"wait-on -t 60000 http-get://127.0.0.1:3920/health http-get://127.0.0.1:5173 && cross-env PDV_BACKEND_MANAGED=0 electron .\"",
+    "dev:web": "concurrently -k -n api,web -c cyan,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "test": "tsx --test tests/money.test.ts tests/fiscal-label.test.ts",
+    "db:migrate": "npm run prisma:deploy -w backend",
+    "db:generate": "npm run prisma:generate -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^33.4.0",
+    "tsx": "^4.19.3",
+    "wait-on": "^8.0.2"
+  }
+}
